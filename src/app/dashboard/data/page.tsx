@@ -231,132 +231,136 @@ const networks = [
                                 </div>
                             </div>
 
-                {/* Phone number */}
-                <div>
-                    <label className="block text-xs font-bold text-heading uppercase tracking-wide mb-2">
-                    Phone Number
-                    </label>
-                    <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) =>
-                        setPhone(e.target.value.replace(/[^0-9]/g, ""))
-                    }
-                    placeholder="08012345678"
-                    maxLength={11}
-                    required
-                    />
-                    <button
-                    type="button"
-                    onClick={() => setPhone(user?.phone ?? "")}
-                    className="text-xs text-primary mt-1 bg-transparent border-none cursor-pointer hover:underline"
-                    >
-                    Use my number ({user?.phone})
-                    </button>
-                </div>
-
-                {/* Data plans */}
-                {network && (
-                    <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    >
-                    <label className="block text-xs font-bold text-heading uppercase tracking-wide mb-3">
-                        Select Plan
-                    </label>
-                    {loadingPlans ? (
-                        <div className="flex items-center justify-center py-8">
-                        <Loader
-                            size={24}
-                            className="animate-spin text-primary"
-                        />
-                        </div>
-                    ) : (
-                        <div className="flex flex-col gap-2">
-                        {plans.map((plan) => (
-                            <button
-                            key={plan.code}
-                            type="button"
-                            onClick={() => setSelectedPlan(plan)}
-                            className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all duration-200 cursor-pointer bg-transparent text-left ${
-                                selectedPlan?.code === plan.code
-                                ? "bg-primary/10 border-primary"
-                                : "border-border hover:border-primary/30"
-                            }`}
-                            >
+                            {/* Phone number */}
                             <div>
-                                <p
-                                className={`text-sm font-semibold ${
-                                    selectedPlan?.code === plan.code
-                                    ? "text-primary"
-                                    : "text-heading"
-                                }`}
-                                >
-                                {plan.name}
-                                </p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <span
-                                className={`text-sm font-bold ${
-                                    selectedPlan?.code === plan.code
-                                    ? "text-primary"
-                                    : "text-heading"
-                                }`}
-                                >
-                                ₦{plan.amount.toLocaleString()}
-                                </span>
-                                {selectedPlan?.code === plan.code && (
-                                <CheckCircle
-                                    size={16}
-                                    className="text-primary"
+                                <label className="block text-xs font-bold text-heading uppercase tracking-wide mb-2">
+                                Phone Number
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    value={phone}
+                                    onChange={(e) =>
+                                        setPhone(e.target.value.replace(/[^0-9]/g, ""))
+                                    }
+                                    placeholder="08012345678"
+                                    maxLength={11}
+                                    required
                                 />
-                                )}
+
+                                <button
+                                    type="button"
+                                    onClick={() => setPhone(user?.phone ?? "")}
+                                    className="text-xs text-primary mt-1 bg-transparent border-none cursor-pointer hover:underline"
+                                >
+                                    Use my number ({user?.phone})
+                                </button>
                             </div>
+
+                            {/* Data plans */}
+                            {network && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                >
+                                    <label className="block text-xs font-bold text-heading uppercase tracking-wide mb-3">
+                                        Select Plan
+                                    </label>
+
+                                    {loadingPlans ? (
+                                        <div className="flex items-center justify-center py-8">
+                                            <Loader
+                                                size={24}
+                                                className="animate-spin text-primary"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="flex flex-col gap-2">
+                                            {plans.map((plan) => (
+                                                <button
+                                                    key={plan.code}
+                                                    type="button"
+                                                    onClick={() => setSelectedPlan(plan)}
+                                                    className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all duration-200 cursor-pointer bg-transparent text-left ${
+                                                        selectedPlan?.code === plan.code
+                                                        ? "bg-primary/10 border-primary"
+                                                        : "border-border hover:border-primary/30"
+                                                    }`}
+                                                >
+                                                    <div>
+                                                        <p
+                                                        className={`text-sm font-semibold ${
+                                                            selectedPlan?.code === plan.code
+                                                            ? "text-primary"
+                                                            : "text-heading"
+                                                        }`}
+                                                        >
+                                                            {plan.name}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="flex items-center gap-2">
+                                                        <span
+                                                        className={`text-sm font-bold ${
+                                                            selectedPlan?.code === plan.code
+                                                            ? "text-primary"
+                                                            : "text-heading"
+                                                        }`}
+                                                    >
+                                                        &#8358;{plan.amount.toLocaleString()}
+                                                        </span>
+                                                        {selectedPlan?.code === plan.code && (
+                                                            <CheckCircle
+                                                                size={16}
+                                                                className="text-primary"
+                                                            />
+                                                        )}
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </motion.div>
+                            )}
+
+                            {/* Summary */}
+                            {network && phone && selectedPlan && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="bg-card border border-border rounded-xl p-4 text-sm"
+                                >
+                                    <p className="text-secondary mb-1">Summary</p>
+                                    <p className="text-heading font-semibold">
+                                        Sending{" "}
+                                        <span className="text-primary">{selectedPlan.name}</span>{" "}
+                                        {network} data to{" "}
+                                        <span className="text-primary">{phone}</span> for{" "}
+                                        <span className="text-primary">
+                                        &#8358;{selectedPlan.amount.toLocaleString()}
+                                        </span>
+                                    </p>
+                                </motion.div>
+                            )}
+
+                            {/* Submit */}
+                            <button
+                                type="submit"
+                                disabled={loading || !network || !phone || !selectedPlan}
+                                className="btn-primary w-full flex items-center justify-center gap-2 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {loading ? (
+                                <Loader size={18} className="animate-spin" />
+                                ) : (
+                                    <>
+                                        Buy Data <ArrowRight size={18} />
+                                    </>
+                                )}
                             </button>
-                        ))}
-                        </div>
-                    )}
+                        </form>
                     </motion.div>
                 )}
-
-                {/* Summary */}
-                {network && phone && selectedPlan && (
-                    <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-card border border-border rounded-xl p-4 text-sm"
-                    >
-                    <p className="text-secondary mb-1">Summary</p>
-                    <p className="text-heading font-semibold">
-                        Sending{" "}
-                        <span className="text-primary">{selectedPlan.name}</span>{" "}
-                        {network} data to{" "}
-                        <span className="text-primary">{phone}</span> for{" "}
-                        <span className="text-primary">
-                        ₦{selectedPlan.amount.toLocaleString()}
-                        </span>
-                    </p>
-                    </motion.div>
-                )}
-
-                {/* Submit */}
-                <button
-                    type="submit"
-                    disabled={loading || !network || !phone || !selectedPlan}
-                    className="btn-primary w-full flex items-center justify-center gap-2 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    {loading ? (
-                    <Loader size={18} className="animate-spin" />
-                    ) : (
-                    <>
-                        Buy Data <ArrowRight size={18} />
-                    </>
-                    )}
-                </button>
-                </form>
-            </motion.div>
-            )}
-        </AnimatePresence>
+            </AnimatePresence>
         </div>
     );
 }
