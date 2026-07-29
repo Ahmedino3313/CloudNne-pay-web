@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ApiResponse, LoginResponse, User, Wallet, Transaction, AirtimeConversion, Withdrawal, Notification, ConversionRate } from "@/types";
+import { ApiResponse, LoginResponse, User, Wallet, Transaction, AirtimeConversion, Withdrawal, Notification, ConversionRate, Bank } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000/api/v1";
 
@@ -133,6 +133,7 @@ export const withdrawalApi = {
     request: (data: {
         amount: number;
         bankName: string;
+        bankCode: string;
         accountNumber: string;
         accountName: string;
         transactionPin: string;
@@ -140,6 +141,25 @@ export const withdrawalApi = {
     getAll: () => api.get<ApiResponse<Withdrawal[]>>("/withdrawals"),
     setPin: (pin: string) =>
         api.post<ApiResponse<null>>("/withdrawals/set-pin", { pin }),
+};
+
+// ─── Users ───────────
+export const userApi = {
+    getSecurity: () =>
+        api.get<ApiResponse<{ hasPin: boolean; isVerified: boolean; }>>("/users/security"),
+    updateProfile: (data: { fullName?: string; phone?: string }) =>
+        api.patch<ApiResponse<User>>("/users/profile", data),
+    changePassword: (data: { currentPassword: string; newPassword: string;}) => 
+        api.patch<ApiResponse<null>>("/users/change-password", data),
+    setPin: (pin: string) =>
+        api.post<ApiResponse<null>>("/withdrawals/set-pin", { pin }),
+};
+
+// ─── Bank ────────────────
+export const bankApi = {
+    getAll: () => api.get<ApiResponse<Bank[]>>("/banks"),
+    verifyAccount: (data: { accountNumber: string; bankCode: string }) =>
+        api.post<ApiResponse<{ accountName: string; accountNumber: string }>>("/banks/verify", data),
 };
 
 // ─── Transactions ────────────

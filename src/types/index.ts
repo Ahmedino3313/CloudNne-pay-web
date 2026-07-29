@@ -131,3 +131,10 @@ export interface ConversionRate {
     rate: number;
     isActive: boolean;
 }
+
+// ─── Bank ────────────────────────────────────────────
+export interface Bank {
+    name: string;
+    code: string;
+    slug: string;
+}
