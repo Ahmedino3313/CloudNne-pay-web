@@ -30,23 +30,33 @@ export default function LoginPage() {
     };
 
     const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setLoading(true);
-        setError("");
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-        try {
+    try {
         const user = await login(form.emailOrPhone, form.password);
-        if (user.role === "ADMIN" || user.role === "SUPER_ADMIN") {
+            if (user.role === "ADMIN" || user.role === "SUPER_ADMIN") {
             router.push("/admin");
         } else {
             router.push("/dashboard");
         }
         } catch (err: any) {
-        setError(
-            err?.response?.data?.message ?? "Login failed. Please try again."
-        );
+            const status = err?.response?.status;
+            const message = err?.response?.data?.message ?? "Login failed. Please try again.";
+            const data = err?.response?.data?.data;
+
+            // If unverified redirect to OTP page
+                if (status === 403 && data?.userId) {
+                router.push(
+                    `/auth/verify-otp?userId=${data.userId}&email=${encodeURIComponent(data.email)}`
+                );
+                return;
+            }
+
+            setError(message);
         } finally {
-        setLoading(false);
+            setLoading(false);
         }
     };
 

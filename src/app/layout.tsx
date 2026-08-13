@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CloudNine Pay — Recharge. Convert. Withdraw.",
+  title: "CloudNine Pay - Recharge. Convert. Withdraw.",
   description:
     "Nigeria's fastest airtime-to-cash platform. Buy airtime, buy data, convert airtime to cash and withdraw instantly.",
   icons: {

@@ -5,12 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, ArrowRight, Loader, Check } from "lucide-react";
-import { useAuthStore } from "@/store/auth.store";
 import AuthNavbar from "@/components/layout/AuthNavbar";
+import { authApi } from "@/lib/api";
 
 export default function RegisterPage() {
     const router = useRouter();
-    const register = useAuthStore((state) => state.register);
 
     const [form, setForm] = useState({
         fullName: "",
@@ -83,9 +82,13 @@ export default function RegisterPage() {
         setError("");
 
         try {
-            await register(form);
-            // Redirect to login after successful registration
-            router.push("/auth/login?registered=true");
+            const { data } = await authApi.register(form);
+            const { userId, email } = data.data! as { userId: string; email: string };
+
+            // Redirect to OTP verification page
+            router.push(
+            `/auth/verify-otp?userId=${userId}&email=${encodeURIComponent(email)}`
+            );
         } catch (err: any) {
             setError(
             err?.response?.data?.message ?? "Registration failed. Please try again."

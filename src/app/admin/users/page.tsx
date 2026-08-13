@@ -180,33 +180,37 @@ export default function AdminUsersPage() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.05 }}
-              className={`flex items-center gap-4 p-4 ${
+              className={`flex flex-col sm:flex-row sm:items-center gap-3 p-4 ${
                 i < users.length - 1 ? "border-b border-border" : ""
               }`}
             >
-              {/* Avatar */}
-              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shrink-0">
-                {u.fullName?.charAt(0) ?? "U"}
-              </div>
-
-              {/* Details */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <p className="text-sm font-semibold text-heading truncate">
-                    {u.fullName}
-                  </p>
-                  {getRoleBadge(u.role)}
+              {/* Top row — avatar and details */}
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                {/* Avatar */}
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shrink-0">
+                  {u.fullName?.charAt(0) ?? "U"}
                 </div>
-                <p className="text-xs text-secondary truncate">
-                  {u.email} · {u.phone}
-                </p>
-                <p className="text-xs text-secondary mt-0.5">
-                  Balance: ₦{(u as any).walletBalance?.toLocaleString() ?? 0}
-                </p>
+
+                {/* Details */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                    <p className="text-sm font-semibold text-heading truncate">
+                      {u.fullName}
+                    </p>
+                    {getRoleBadge(u.role)}
+                  </div>
+                  <p className="text-xs text-secondary truncate">
+                    {u.email} · {u.phone}
+                  </p>
+                  <p className="text-xs text-secondary mt-0.5">
+                    Balance: ₦{(u as any).walletBalance?.toLocaleString() ?? 0}
+                  </p>
+                </div>
               </div>
 
-              {/* Status */}
-              <div className="flex items-center gap-2 shrink-0">
+              {/* Bottom row on mobile — status and button */}
+              <div className="flex items-center justify-between sm:justify-end gap-3 ml-13 sm:ml-0">
+                {/* Status */}
                 {(u as any).isActive ? (
                   <span className="badge-success flex items-center gap-1">
                     <CheckCircle size={11} /> Active
@@ -216,32 +220,32 @@ export default function AdminUsersPage() {
                     <XCircle size={11} /> Inactive
                   </span>
                 )}
-              </div>
 
-              {/* Toggle button */}
-              {u.role !== "SUPER_ADMIN" && (
-                <button
-                  onClick={() => handleToggleStatus(u.id)}
-                  disabled={togglingId === u.id}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors disabled:opacity-50 cursor-pointer border ${
-                    (u as any).isActive
-                      ? "bg-red-50 border-red-200 text-red-600 hover:bg-red-100"
-                      : "bg-green-50 border-green-200 text-success hover:bg-green-100"
-                  }`}
-                >
-                  {togglingId === u.id ? (
-                    <Loader size={12} className="animate-spin" />
-                  ) : (u as any).isActive ? (
-                    <>
-                      <XCircle size={12} /> Deactivate
-                    </>
-                  ) : (
-                    <>
-                      <CheckCircle size={12} /> Activate
-                    </>
-                  )}
-                </button>
-              )}
+                {/* Toggle button */}
+                {u.role !== "SUPER_ADMIN" && (
+                  <button
+                    onClick={() => handleToggleStatus(u.id)}
+                    disabled={togglingId === u.id}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors disabled:opacity-50 cursor-pointer border ${
+                      (u as any).isActive
+                        ? "bg-red-50 border-red-200 text-red-600 hover:bg-red-100"
+                        : "bg-green-50 border-green-200 text-success hover:bg-green-100"
+                    }`}
+                  >
+                    {togglingId === u.id ? (
+                      <Loader size={12} className="animate-spin" />
+                    ) : (u as any).isActive ? (
+                      <>
+                        <XCircle size={12} /> Deactivate
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle size={12} /> Activate
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
             </motion.div>
           ))
         )}

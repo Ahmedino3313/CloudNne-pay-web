@@ -6,7 +6,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuthStore } from "@/store/auth.store";
-import { LayoutDashboard, Smartphone, Wifi, RefreshCw, ArrowDownToLine, Clock, Bell, Settings, LogOut, Menu, X, ChevronLeft, ChevronRight, ShieldCheck, Users, } from "lucide-react";
+import { LayoutDashboard, Smartphone, Wifi, RefreshCw, ArrowDownToLine, Clock, Bell, Settings, LogOut, Menu, X, ChevronLeft, ChevronRight, ShieldCheck, Users, TrendingUp, Activity, Shield, } from "lucide-react";
 
 const navItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
@@ -32,10 +32,14 @@ export default function Sidebar() {
     };
 
     const SidebarContent = () => {
-        const adminNavItems = [
-            { icon: LayoutDashboard, label: "Overview", href: "/admin" },
-            { icon: Users, label: "Users", href: "/admin/users" },
-            ...(user?.role === "SUPER_ADMIN"
+    const adminNavItems = [
+        { icon: LayoutDashboard, label: "Overview", href: "/admin" },
+        { icon: Users, label: "Users", href: "/admin/users" },
+        { icon: ArrowDownToLine, label: "Withdrawals", href: "/admin/withdrawals" },
+        { icon: TrendingUp, label: "Revenue", href: "/admin/revenue" },
+        { icon: Activity, label: "App Health", href: "/admin/health" },
+        {icon: Shield, label: "Audit Logs", href: "/admin/audit-logs" },
+        ...(user?.role === "SUPER_ADMIN"
             ? [{ icon: Settings, label: "Settings", href: "/admin/settings" }]
             : []),
         ];

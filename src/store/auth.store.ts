@@ -12,10 +12,11 @@ interface AuthState {
         email: string;
         phone: string;
         password: string;
-    }) => Promise<void>;
+    }) => Promise<{ userId: string; email: string }>;
     logout: () => Promise<void>;
     loadUser: () => Promise<void>;
     updateBalance: (balance: number) => void;
+    setUser: (user: User) => void;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -31,9 +32,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     },
 
     register: async (formData) => {
-        const { data } = await authApi.register(formData);
-        const user = data.data!.user;
-        set({ user, isAuthenticated: true });
+    // Register now returns userId and email for OTP verification
+    // Tokens are issued after OTP verification
+    // This function is kept for mobile app compatibility
+    const { data } = await authApi.register(formData);
+    return data.data!;
     },
 
     logout: async () => {
@@ -61,5 +64,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     updateBalance: (balance) => {
         const user = get().user;
         if (user) set({ user: { ...user, walletBalance: balance } });
+    },
+
+    setUser: (user) => {
+        set({ user, isAuthenticated: true });
     },
 }));

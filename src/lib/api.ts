@@ -59,7 +59,7 @@ export const authApi = {
         email: string;
         phone: string;
         password: string;
-    }) => api.post<ApiResponse<LoginResponse>>("/auth/register", data),
+    }) => api.post<ApiResponse<{ userId: string; email: string }>>("/auth/register", data),
 
     login: (data: { emailOrPhone: string; password: string }) =>
         api.post<ApiResponse<LoginResponse>>("/auth/login", data),
@@ -67,6 +67,18 @@ export const authApi = {
     logout: () => api.post<ApiResponse<null>>("/auth/logout"),
 
     getMe: () => api.get<ApiResponse<User>>("/auth/me"),
+
+    forgotPassword: (email: string) =>
+    api.post<ApiResponse<null>>("/auth/forgot-password", { email }),
+
+    resetPassword: (data: { token: string; newPassword: string }) =>
+    api.post<ApiResponse<null>>("/auth/reset-password", data),
+
+    verifyOtp: (data: { userId: string; otp: string }) =>
+    api.post<ApiResponse<LoginResponse>>("/auth/verify-otp", data),
+
+    resendOtp: (userId: string) =>
+    api.post<ApiResponse<null>>("/auth/resend-otp", { userId }),
 };
 
 // ─── Wallet ─────────────────
@@ -195,20 +207,68 @@ export const adminApi = {
         pendingWithdrawals: number;
         totalVolume: number;
     }>>("/admin/analytics"),
+
     getUsers: (params?: { page?: number; search?: string }) =>
         api.get<ApiResponse<User[]>>("/admin/users", { params }),
+
     toggleUser: (id: string) =>
-        api.patch<ApiResponse<{ isActive: boolean }>>(
-        `/admin/users/${id}/toggle-status`
-        ),
+        api.patch<ApiResponse<{ isActive: boolean }>>(`/admin/users/${id}/toggle-status`),
+
     getPendingConversions: () =>
         api.get<ApiResponse<AirtimeConversion[]>>("/admin/conversions/pending"),
+
     approveConversion: (id: string) =>
         api.patch<ApiResponse<null>>(`/admin/conversions/${id}/approve`),
+
     rejectConversion: (id: string) =>
         api.patch<ApiResponse<null>>(`/admin/conversions/${id}/reject`),
+
     updateRate: (data: { network: string; rate: number }) =>
         api.patch<ApiResponse<ConversionRate>>("/admin/rates", data),
+
+    getRevenue: () => api.get<ApiResponse<{
+    revenueToday: number;
+    revenueThisMonth: number;
+    revenueByType: {
+        type: string;
+        _sum: { amount: number | null };
+        _count: number;
+    }[];
+    dailyRevenue: { date: string; revenue: number }[];
+    newUsersToday: number;
+    newUsersThisMonth: number;
+    totalWalletBalance: number;
+    }>>("/admin/revenue"),
+
+    getHealth: () => api.get<ApiResponse<{
+    status: string;
+    timestamp: string;
+    services: {
+        database: { name: string; status: string };
+        paystack: { name: string; status: string };
+        monnify: { name: string; status: string };
+    };
+    }>>("/admin/health"),
+
+    getWithdrawals: (params?: { page?: number; status?: string }) =>
+    api.get<ApiResponse<Withdrawal[]>>("/admin/withdrawals", { params }),
+
+    updateWithdrawalStatus: (id: string, status: string) =>
+    api.patch<ApiResponse<null>>(`/admin/withdrawals/${id}/status`, { status }),
+
+    getAuditLogs: (params?: { page?: number }) =>
+    api.get<ApiResponse<{
+        id: string;
+        action: string;
+        entity: string;
+        entityId: string | null;
+        ip: string | null;
+        userAgent: string | null;
+        createdAt: string;
+        user: { fullName: string; email: string } | null;
+    }[]>>("/admin/audit-logs", { params }),
 };
+
+    
 
 export default api;

@@ -99,7 +99,7 @@ export default function CTASection() {
 
                     {/* Copyright */}
                     <span className="text-secondary text-sm">
-                        © {new Date().getFullYear()} CloudNine Pay · African-built, globally polished.
+                        &copy; {new Date().getFullYear()} CloudNine Pay · Powered by CloudNine Technology
                     </span>
 
                     {/* Social links */}

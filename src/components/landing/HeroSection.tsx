@@ -68,7 +68,7 @@ export default function HeroSection() {
                         className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary text-xs font-semibold px-4 py-2 rounded-full mb-5"
                     >
                         <Zap size={12} fill="currentColor" />
-                        African-Built · Globally Polished
+                            Simple. Fast. Secure.
                     </motion.div>
 
                     {/* Heading */}
