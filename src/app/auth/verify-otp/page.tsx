@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader, CheckCircle, RefreshCw, Mail } from "lucide-react";
@@ -8,7 +8,7 @@ import AuthNavbar from "@/components/layout/AuthNavbar";
 import { authApi } from "@/lib/api";
 import { useAuthStore } from "@/store/auth.store";
 
-export default function VerifyOtpPage() {
+function VerifyOtpPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
@@ -260,5 +260,13 @@ export default function VerifyOtpPage() {
         )}
       </motion.div>
     </div>
+  );
+}
+
+export default function VerifyOtpPageWrapper() {
+  return (
+    <Suspense>
+      <VerifyOtpPage />
+    </Suspense>
   );
 }

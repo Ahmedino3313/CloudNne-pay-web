@@ -3,15 +3,15 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/layout/Providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: "CloudNine Pay - Recharge. Convert. Withdraw.",
@@ -35,7 +35,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      {/* className={`${geistSans.variable} ${geistMono.variable} antialiased`} */}
+      <body>
         <Providers>{children}</Providers>
       </body>
     </html>
