@@ -108,7 +108,7 @@ function LoginForm() {
                             name="emailOrPhone"
                             value={form.emailOrPhone}
                             onChange={handleChange}
-                            placeholder="ahmed@example.com or 08012345678"
+                            placeholder="Enter email or phone number"
                             required
                         />
                     </div>
@@ -134,7 +134,7 @@ function LoginForm() {
                             name="password"
                             value={form.password}
                             onChange={handleChange}
-                            placeholder="••••••••"
+                            placeholder="Enter password"
                             required
                             className="pr-12"
                         />
